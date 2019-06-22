@@ -28,7 +28,7 @@ The output files: steinerData1.dat, steinerData3.dat
 
 The steinerData3.dat contains some information about the tree such as its size
 
-The steinerData1.dat contains an graph represented in a adjacency list
+The steinerData1.dat contains a graph represented in a adjacency list
 
 ex:
 
