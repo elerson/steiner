@@ -1,0 +1,8 @@
+#include "/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/src/CGAL_Core/CoreIO.cpp"
+#include "/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/src/CGAL_Core/Expr.cpp"
+#include "/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/src/CGAL_Core/BigFloat.cpp"
+#include "/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/src/CGAL_Core/extLong.cpp"
+#include "/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/src/CGAL_Core/CoreDefs.cpp"
+#include "/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/src/CGAL_Core/CoreAux.cpp"
+#include "/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/src/CGAL_Core/Real.cpp"
+#include "/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/src/CGAL_Core/GmpIO.cpp"

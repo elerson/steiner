@@ -1,0 +1,10 @@
+#!/bin/bash
+FILES=testes/*
+n=5
+for f in $FILES
+do
+
+#echo $n
+./projeto world666.stp $n 200
+ n=$((n + 1))
+done

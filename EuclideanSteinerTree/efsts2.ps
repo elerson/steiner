@@ -1,0 +1,469 @@
+%!PS-Adobe-3.0
+%%Creator: Steiner Tree Version 3.1
+%%Copyright: Copyright (c) 1998, 2001 by David M. Warme
+%%LanguageLevel: 1
+%%DocumentNeededResources: font Times-Roman
+%%DocumentSuppliedResources: procset SteinerTreeProcs 2.0 0
+%%EndComments
+%%BeginProlog
+%%BeginProcSet: SteinerTreeProcs 2.0 0
+/LabelTerminals	0		def	% set non-zero to label terminals
+/inch { 72 mul } def
+/PaperWidth	8.5 inch	def
+/PaperHeight	11 inch		def
+/BigBoxSize	7 inch		def
+/SmallBoxSize	2 inch		def
+/SmallBoxHeight	SmallBoxSize	def
+/SmallBoxWidth	SmallBoxSize	def
+/BoxHeight	BigBoxSize	def
+/BoxWidth	BigBoxSize	def
+/MinX		0		def
+/MaxX		1		def
+/MinY		0		def
+/MaxY		1		def
+/BoxMode	0		def	% (0 ==> big plot, 1 ==> small plots)
+/SmallBoxCount	0		def
+/TermRadius	1 32 div inch	def
+/LineWidth	currentlinewidth	def
+
+% Define the clipping region to be the inside edge of the box.
+
+/ClipHeight	BigBoxSize LineWidth sub def
+/ClipWidth	ClipHeight def
+
+% Define the plotting region so that points plotted at the extremes will
+% exactly meet the edge of the clipping region.  (Reduce by the terminal
+% radius on each side.)
+
+/PlotHeight	ClipHeight TermRadius 2 mul sub def
+/PlotWidth	ClipWidth  TermRadius 2 mul sub	def
+/XlateX { MinX sub MaxX MinX sub div PlotWidth mul } def
+/XlateY { MinY sub MaxY MinY sub div PlotHeight mul } def
+/XlateXY { exch XlateX exch XlateY } def
+/Dup2 { dup 3 -1 roll dup 4 1 roll exch } def
+/Swap2 { 4 2 roll } def
+% define the two fonts we will use:
+%	- one for numbering the terminals
+%	- one for printing the plot's title
+/TermNumPointsize	8	def
+/TitlePointsize		15	def
+/TermNumFont
+	/Times-Roman findfont TermNumPointsize scalefont
+def
+/UseTermNumFont { TermNumFont setfont } def
+/TitleFont
+	/Times-Roman findfont TitlePointsize scalefont
+def
+/UseTitleFont { TitleFont setfont } def
+/DefineTerminals {
+	/NumTerms exch def
+	/TermX NumTerms array def
+	/TermY NumTerms array def
+	/TermIndex 0 def
+} def
+/DT {
+	TermY TermIndex 3 -1 roll put
+	TermX TermIndex 3 -1 roll put
+	/TermIndex TermIndex 1 add def
+} def
+/SetAxes {	% minx maxx miny maxy
+	/MaxY exch def
+	/MinY exch def
+	/MaxX exch def
+	/MinX exch def
+} def
+/PTString	12 string	def
+/Plot_Terminals {
+	LabelTerminals 0 eq {
+		% Display terminals, no labels
+		0 1 NumTerms 1 sub {			% i
+			dup				% i i
+			TermX exch get exch		% x i
+			TermY exch get
+			newpath
+			XlateXY
+			TermRadius 0 360 arc fill
+		} for
+	}
+	{	% Display terminals, with labels
+		0 1 NumTerms 1 sub {			% i
+			dup				% i i
+			PTString cvs exch dup		% str i i
+			TermX exch get exch		% str x i
+			TermY exch get			% str x y
+			newpath
+			XlateXY
+			Dup2
+			TermRadius 0 360 arc fill
+			moveto TermRadius 3 mul dup neg rmoveto
+			UseTermNumFont
+			show
+		} for
+	} ifelse
+} def
+% n T ==> Xn Yn, get coordinates of terminal n.
+/T {
+	dup
+	TermX exch get exch
+	TermY exch get
+} def
+% Draw a line segment.
+/S {
+	newpath
+	XlateXY
+	moveto
+	XlateXY
+	lineto
+	stroke
+} def
+% Draw a corner.  First point is incident to vertical segment.
+% Second point is incident to horizontal segment.
+/C {	% x1 y1 x2 y2
+	newpath
+	% x1 y1 x2 y2 -> x1 y1 x1 y2 x2 y2
+	4 -1 roll dup 5 1 roll exch dup 4 -1 roll exch
+	XlateXY
+	moveto
+	XlateXY
+	lineto
+	XlateXY
+	lineto
+	stroke
+} def
+/BeginPlot {
+	FlushSmallPlot
+	gsave
+	PaperWidth BoxWidth sub 2 div
+	 PaperHeight BoxHeight sub 2 div
+	  translate
+	newpath
+	0 0 moveto
+	BoxWidth 0 lineto
+	BoxWidth BoxHeight lineto
+	0 BoxHeight lineto
+	closepath
+	stroke
+	gsave
+	% establish a clipping region at the inside edge of the box
+	LineWidth 2 div dup moveto
+	ClipWidth 0 rlineto
+	0 ClipHeight rlineto
+	ClipWidth neg 0 rlineto
+	closepath
+	clip
+	% establish the origin for the plotting region
+	LineWidth 2 div TermRadius add
+	 dup
+	  translate
+} def
+/EndPlot {
+	grestore
+	newpath
+	UseTitleFont
+	0 0 moveto
+		dup stringwidth pop BigBoxSize exch sub 2 div
+		TitlePointsize -2 mul
+	rmoveto
+	show
+	grestore
+	showpage
+} def
+/BeginSmallPlot {
+	gsave
+	.75 inch SmallBoxCount 3 mod SmallBoxWidth .5 inch add mul add
+	  .75 inch 3 SmallBoxCount 3 idiv sub SmallBoxHeight .5 inch add mul add
+	    translate
+	SmallBoxWidth BoxWidth div
+	 SmallBoxHeight BoxHeight div
+	  scale
+	newpath
+	0 0 moveto
+	BoxWidth 0 lineto
+	BoxWidth BoxHeight lineto
+	0 BoxHeight lineto
+	closepath
+	stroke
+	gsave
+	% establish a clipping region at the inside edge of the box
+	LineWidth 2 div dup moveto
+	ClipWidth 0 rlineto
+	0 ClipHeight rlineto
+	ClipWidth neg 0 rlineto
+	closepath
+	clip
+	% establish the origin for the plotting region
+	LineWidth 2 div TermRadius add
+	 dup
+	  translate
+} def
+/EndSmallPlot2 {
+	grestore
+	newpath
+	UseTitleFont
+	0 0 moveto
+		dup stringwidth pop BigBoxSize exch sub 2 div
+		TitlePointsize -2 mul
+	rmoveto
+	show
+	grestore
+	/SmallBoxCount SmallBoxCount 1 add def
+	SmallBoxCount 12 ge {
+		FlushSmallPlot
+	} if
+} def
+/FlushSmallPlot {
+	SmallBoxCount 0 gt {
+		showpage
+		/SmallBoxCount	0 def
+	} if
+} def
+/PT {
+	dup				% i i
+	TermX exch get exch		% x i
+	TermY exch get
+	newpath
+	XlateXY
+	TermRadius 0 360 arc fill
+} def
+%%EndProcSet
+%%EndProlog
+
+ % Phase 1: 0.00 seconds
+
+%%BeginSetup
+
+0 10 0 10 SetAxes
+
+6 DefineTerminals
+	5.000000000000000	5.000000000000000	DT
+	1.000000000000000	5.000000000000000	DT
+	1.000000000000000	1.000000000000000	DT
+	3.000000000000000	3.000000000000000	DT
+	3.000000000000000	8.000000000000000	DT
+	5.000000000000000	8.000000000000000	DT
+
+%%EndSetup
+
+%%Page: 1 1
+BeginSmallPlot
+	Plot_Terminals
+ % fs0: 3 1 0
+	3 T	3.000000000000000	3.845299461620749	S
+	3.000000000000000	3.845299461620749	1 T	S
+	3.000000000000000	3.845299461620749	0 T	S
+  (FST 0,  Length = 5.464101615137753)
+EndSmallPlot2
+
+BeginSmallPlot
+	Plot_Terminals
+ % fs1: 4 0 1
+	4 T	3.000000000000000	6.154700538379250	S
+	3.000000000000000	6.154700538379250	0 T	S
+	3.000000000000000	6.154700538379250	1 T	S
+  (FST 1,  Length = 6.464101615137753)
+EndSmallPlot2
+
+BeginSmallPlot
+	Plot_Terminals
+ % fs2: 5 0 1
+	5 T	4.304211465912445	5.751176106505154	S
+	4.304211465912445	5.751176106505154	0 T	S
+	4.304211465912445	5.751176106505154	1 T	S
+  (FST 2,  Length = 6.766432567522306)
+EndSmallPlot2
+
+BeginSmallPlot
+	Plot_Terminals
+ % fs3: 3 2 1
+	3 T	2.154700538379251	3.000000000000000	S
+	2.154700538379251	3.000000000000000	2 T	S
+	2.154700538379251	3.000000000000000	1 T	S
+  (FST 3,  Length = 5.464101615137753)
+EndSmallPlot2
+
+BeginSmallPlot
+	Plot_Terminals
+ % fs4: 5 0 4
+	5 T	4.467170862490632	7.521374550447432	S
+	4.467170862490632	7.521374550447432	0 T	S
+	4.467170862490632	7.521374550447432	4 T	S
+  (FST 4,  Length = 4.836559194862941)
+EndSmallPlot2
+
+BeginSmallPlot
+	Plot_Terminals
+ % fs5: 5 2 4
+	5 T	3.290342086289156	7.666461154730073	S
+	3.290342086289156	7.666461154730073	2 T	S
+	3.290342086289156	7.666461154730073	4 T	S
+  (FST 5,  Length = 9.233022869351309)
+EndSmallPlot2
+
+BeginSmallPlot
+	Plot_Terminals
+ % fs6: 5 3 4
+	5 T	3.664360214737101	7.472506720137540	S
+	3.664360214737101	7.472506720137540	3 T	S
+	3.664360214737101	7.472506720137540	4 T	S
+  (FST 6,  Length = 6.805917136998419)
+EndSmallPlot2
+
+BeginSmallPlot
+	Plot_Terminals
+ % fs7: 4 5
+	4 T	5 T	S
+  (FST 7,  Length = 2.000000000000000)
+EndSmallPlot2
+
+BeginSmallPlot
+	Plot_Terminals
+ % fs8: 0 3
+	0 T	3 T	S
+  (FST 8,  Length = 2.828427124746190)
+EndSmallPlot2
+
+BeginSmallPlot
+	Plot_Terminals
+ % fs9: 2 3
+	2 T	3 T	S
+  (FST 9,  Length = 2.828427124746190)
+EndSmallPlot2
+
+BeginSmallPlot
+	Plot_Terminals
+ % fs10: 1 3
+	1 T	3 T	S
+  (FST 10,  Length = 2.828427124746190)
+EndSmallPlot2
+
+BeginSmallPlot
+	Plot_Terminals
+ % fs11: 0 5
+	0 T	5 T	S
+  (FST 11,  Length = 3.000000000000000)
+EndSmallPlot2
+
+%%Page: 2 2
+BeginSmallPlot
+ % fs11: 0 5
+	0 T	5 T	S
+ % fs10: 1 3
+	1 T	3 T	S
+	Plot_Terminals
+  (FSTs 10, 11.)
+EndSmallPlot2
+
+BeginSmallPlot
+ % fs9: 2 3
+	2 T	3 T	S
+ % fs7: 4 5
+	4 T	5 T	S
+	Plot_Terminals
+  (FSTs 7, 9.)
+EndSmallPlot2
+
+BeginSmallPlot
+ % fs8: 0 3
+	0 T	3 T	S
+ % fs5: 5 2 4
+	5 T	3.290342086289156	7.666461154730073	S
+	3.290342086289156	7.666461154730073	2 T	S
+	3.290342086289156	7.666461154730073	4 T	S
+	Plot_Terminals
+  (FSTs 5, 8.)
+EndSmallPlot2
+
+BeginSmallPlot
+ % fs6: 5 3 4
+	5 T	3.664360214737101	7.472506720137540	S
+	3.664360214737101	7.472506720137540	3 T	S
+	3.664360214737101	7.472506720137540	4 T	S
+	Plot_Terminals
+  (FST 6.)
+EndSmallPlot2
+
+BeginSmallPlot
+ % fs4: 5 0 4
+	5 T	4.467170862490632	7.521374550447432	S
+	4.467170862490632	7.521374550447432	0 T	S
+	4.467170862490632	7.521374550447432	4 T	S
+ % fs3: 3 2 1
+	3 T	2.154700538379251	3.000000000000000	S
+	2.154700538379251	3.000000000000000	2 T	S
+	2.154700538379251	3.000000000000000	1 T	S
+	Plot_Terminals
+  (FSTs 3, 4.)
+EndSmallPlot2
+
+BeginSmallPlot
+ % fs2: 5 0 1
+	5 T	4.304211465912445	5.751176106505154	S
+	4.304211465912445	5.751176106505154	0 T	S
+	4.304211465912445	5.751176106505154	1 T	S
+	Plot_Terminals
+  (FST 2.)
+EndSmallPlot2
+
+BeginSmallPlot
+ % fs1: 4 0 1
+	4 T	3.000000000000000	6.154700538379250	S
+	3.000000000000000	6.154700538379250	0 T	S
+	3.000000000000000	6.154700538379250	1 T	S
+	Plot_Terminals
+  (FST 1.)
+EndSmallPlot2
+
+BeginSmallPlot
+ % fs0: 3 1 0
+	3 T	3.000000000000000	3.845299461620749	S
+	3.000000000000000	3.845299461620749	1 T	S
+	3.000000000000000	3.845299461620749	0 T	S
+	Plot_Terminals
+  (FST 0.)
+EndSmallPlot2
+
+FlushSmallPlot
+%%Page: 3 3
+BeginPlot
+	Plot_Terminals
+ % fs0: 3 1 0
+	3 T	3.000000000000000	3.845299461620749	S
+	3.000000000000000	3.845299461620749	1 T	S
+	3.000000000000000	3.845299461620749	0 T	S
+ % fs1: 4 0 1
+	4 T	3.000000000000000	6.154700538379250	S
+	3.000000000000000	6.154700538379250	0 T	S
+	3.000000000000000	6.154700538379250	1 T	S
+ % fs2: 5 0 1
+	5 T	4.304211465912445	5.751176106505154	S
+	4.304211465912445	5.751176106505154	0 T	S
+	4.304211465912445	5.751176106505154	1 T	S
+ % fs3: 3 2 1
+	3 T	2.154700538379251	3.000000000000000	S
+	2.154700538379251	3.000000000000000	2 T	S
+	2.154700538379251	3.000000000000000	1 T	S
+ % fs4: 5 0 4
+	5 T	4.467170862490632	7.521374550447432	S
+	4.467170862490632	7.521374550447432	0 T	S
+	4.467170862490632	7.521374550447432	4 T	S
+ % fs5: 5 2 4
+	5 T	3.290342086289156	7.666461154730073	S
+	3.290342086289156	7.666461154730073	2 T	S
+	3.290342086289156	7.666461154730073	4 T	S
+ % fs6: 5 3 4
+	5 T	3.664360214737101	7.472506720137540	S
+	3.664360214737101	7.472506720137540	3 T	S
+	3.664360214737101	7.472506720137540	4 T	S
+ % fs7: 4 5
+	4 T	5 T	S
+ % fs8: 0 3
+	0 T	3 T	S
+ % fs9: 2 3
+	2 T	3 T	S
+ % fs10: 1 3
+	1 T	3 T	S
+ % fs11: 0 5
+	0 T	5 T	S
+  (All FSTs:  6 points,  0.00 seconds)
+EndPlot
+

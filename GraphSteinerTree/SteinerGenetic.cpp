@@ -1,0 +1,143 @@
+/* 
+ * File:   SteinerGenetic.cpp
+ * Author: elerson
+ * 
+ * Created on June 28, 2013, 9:51 PM
+ */
+
+#include "SteinerGenetic.h"
+
+bool operator<(const Subject& lhs, const Subject& rhs)
+{      
+      return lhs.fitness < rhs.fitness;
+}
+
+struct compareSubject {
+    bool operator() (Subject* lhs, Subject* rhs) const{
+
+        return lhs->fitness < rhs->fitness;
+    }
+};
+
+SteinerGenetic::SteinerGenetic() {
+}
+
+SteinerGenetic::SteinerGenetic(const SteinerGenetic& orig) {
+}
+
+SteinerGenetic::~SteinerGenetic() {
+}
+
+double SteinerGenetic::calculateSteinerTree(AdjList* inGraph,std::vector<int>* terminals,int k){
+    srand (time(NULL));
+    int populationSize = 50;
+    int initialMutation = 5;
+    int mutation =6;
+    int iteractions = 100;
+    int tournamentSize = 5;
+    
+    AdjList* outGraph = new AdjList(inGraph->size);
+    Prim prim;
+    Dijkstra dijkstra;    
+    
+    //create boolean terminals list
+    bool terminalVertices[inGraph->size];
+    for(int i =0; i < inGraph->size;i++)
+         terminalVertices[i] = false;
+    for(int i =0; i < terminals->size();i++){
+        terminalVertices[terminals->at(i)] = true;
+    }
+    //generate minDistances
+    AdjList** minDistances = new AdjList*[inGraph->size];
+    for(int i =0; i < inGraph->size;i++){
+        minDistances[i] = dijkstra.getMinDist(i,inGraph);
+    }
+    
+    
+    // create initial population
+    
+    std::vector<Subject*>* population = new std::vector<Subject*>;
+    Subject* sub = new Subject(inGraph->size,terminalVertices,0);
+    Subject* best = sub->clone();
+    //Subject* w = sub->clone();
+    //double med = w->fitness;
+    //std::cout << sub->generateFitness(minDistances);
+    population->push_back(sub);
+    for(int i = 0; i < populationSize; i++){
+        sub = new Subject(inGraph->size,terminalVertices,initialMutation);
+        sub->generateFitness(minDistances);       
+        if(best->generateFitness(minDistances) > sub->generateFitness(minDistances))
+            best = sub->clone();  
+       // if(w->generateFitness(minDistances) < sub->generateFitness(minDistances))
+        //w = sub->clone();
+        
+        population->push_back(sub);        
+    }
+    
+    
+    
+    for(int i = 0; i < iteractions; i++){
+        std::vector<Subject*>* newpopulation = new std::vector<Subject*>;
+        //med = 0;
+        // select the best
+        for(int i = 0; i < populationSize; i++){
+                int id1index = selectionTournament(tournamentSize,population,minDistances);
+                int id2index = selectionTournament(tournamentSize,population,minDistances);
+                //std::cout << id1index << " " << id2index << std::endl;
+                Subject **nid = Subject::reproduct(population->at(id1index),population->at(id2index));                
+                nid[0]->Mutate(mutation);
+                nid[1]->Mutate(mutation);
+                if(nid[0]->generateFitness(minDistances) < best->generateFitness(minDistances))
+                    best = nid[0]->clone(); 
+                
+                if(nid[1]->generateFitness(minDistances) < best->generateFitness(minDistances))
+                    best = nid[1]->clone(); 
+                
+                //if(nid[1]->generateFitness(minDistances) > w->generateFitness(minDistances))
+                  //  w = nid[1]->clone(); 
+                
+                //if(nid[0]->generateFitness(minDistances) > w->generateFitness(minDistances))
+                  //  w = nid[0]->clone(); 
+                
+                if( nid[0]->generateFitness(minDistances) <  nid[1]->generateFitness(minDistances)){
+                    newpopulation->push_back(nid[0]);
+                    
+                    delete nid[1];
+                }else{
+                    newpopulation->push_back(nid[1]);
+                    
+                    delete nid[0];
+                }
+        }
+        newpopulation->push_back(best);
+        for(int i = 0; i < population->size();i++){
+            if(best != population->at(i)){
+                sub = population->at(i);
+                delete sub;
+            }
+        }
+        population->clear();
+        delete population;
+        population = newpopulation; 
+        
+       // newpopulation->clear();
+       // std::cout << best->generateFitness(minDistances) << " " << w->fitness<<" " << med/population->size()<<std::endl;
+    }
+    
+    
+    return best->generateFitness(minDistances);
+    
+}
+
+
+int SteinerGenetic::selectionTournament(int N,std::vector<Subject*>* population,AdjList** minDistances){
+    int ret =  rand()%population->size();
+    int val;
+    for(int i=1;i<N;i++){
+        val = rand()%population->size();
+        if(population->at(ret)->generateFitness(minDistances) > population->at(val)->generateFitness(minDistances))
+            ret = val;
+    }
+    return ret;
+    
+}

@@ -1,0 +1,172 @@
+/* 
+ * File:   main.cpp
+ * Author: elerson
+ *
+ * Created on May 14, 2013, 6:32 PM
+ */
+
+#include <cstdlib>
+#include "Prim.h"
+#include "Dijkstra.h"
+#include "SteinerApproximation.h"
+#include "SteinerGenetic.h"
+#include "Graph.h"
+#include "cstdio"
+#include "iostream"
+#include <algorithm>
+#include<list>
+#include<math.h>
+
+using namespace std;
+
+void create( list<int> l,std::vector< std::vector<int>* >& set){
+    std::vector<int>* newset = new std::vector<int>;
+    for(list<int>::iterator it=l.begin(); it!=l.end() ; ++it)
+            newset->push_back(*it);
+    set.push_back(newset);
+}
+
+void subset(vector<int>& arr, int size, int left, int index, list<int> &l,std::vector< std::vector<int>* >& set){
+    if(left==0){
+        create(l,set);
+        return;
+    }
+    for(int i=index; i<size;i++){
+        l.push_back(arr.at(i));
+        subset(arr,size,left-1,i+1,l,set);
+        l.pop_back();
+    }
+
+}   
+
+/*
+ * 
+ */
+int main(int argc, char** argv) {
+    std::vector<int> terminals;
+    clock_t t1, t2;
+    AdjList* graph = AdjList::readFile(argv[1],terminals,atoi(argv[2]),atoi(argv[3]));
+   
+   // graph->print();
+        
+    SteinerApproximation steiner2;
+    t1 = clock();
+    AdjList* graph2  = steiner2.calculateSteinerTree(graph,&terminals,3);
+
+ t2 = clock(); 
+    float diff = (((float)t2 - (float)t1))/CLOCKS_PER_SEC;
+    std::cout << graph2->mstSize << "," << diff <<",";
+    
+    double testes[5][2];
+    double med;
+    for(int i = 0; i < 5 ; i++){
+        SteinerGenetic steiner;
+        
+	t1 = clock(); 
+        double result = steiner.calculateSteinerTree(graph,&terminals,3);
+        t2 = clock();  
+        float diff = (((float)t2 - (float)t1))/CLOCKS_PER_SEC;
+	//std::cout <<n <<","<< diff / CLOCKS_PER_SEC << std::endl;
+
+        testes[i][0] = result;
+        testes[i][1] = diff;
+        med+= result;
+    }
+    
+    med/=5;
+    double var = 0;
+    for(int i = 0; i < 5 ; i++){
+        var+= (testes[i][0] - med)*(testes[i][0] - med);
+    }
+    var/=4;
+    std::cout << med <<","<<var<<","<<testes[1][1];
+    std::cout << std::endl;
+    //graph2->print();
+    /*
+    std::vector< std::vector<int>* > set;
+    vector<int> a;
+    a.push_back(1);
+    a.push_back(2);
+    a.push_back(3);
+    a.push_back(4);
+    a.push_back(5);
+    
+    
+    list<int> lt;   
+    subset(a,a.size(),3,0,lt,set);
+    
+    for(int i = 0; i < set.size();i++){
+        for(int j = 0 ; j < set.at(0)->size() ; j++)
+            std::cout << set.at(i)->at(j) << " ";
+        std::cout << std::endl;
+    }*/
+    
+    
+    /*AdjList graph(8,true);
+    
+    //0-1
+    GraphNode* node = new GraphNode(1,1);
+    graph.add(0,node);
+    
+    //0-2
+    node = new GraphNode(2,7);
+    graph.add(0,node);
+
+    //1-2
+    node = new GraphNode(2,4);
+    graph.add(1,node);
+    
+    //1-4
+    node = new GraphNode(4,6);
+    graph.add(1,node);
+    
+    //1-3
+    node = new GraphNode(3,9);
+    graph.add(1,node);
+    
+    //4-5
+    node = new GraphNode(5,3);
+    graph.add(4,node);
+
+    //3-6
+    node = new GraphNode(6,2);
+    graph.add(3,node);
+    
+    //5-6
+    node = new GraphNode(6,10);
+    graph.add(5,node);
+    
+    //6-7
+    node = new GraphNode(7,13);
+    graph.add(6,node);
+    
+    //6-7
+    node = new GraphNode(7,5);
+    graph.add(3,node);
+    
+    //2-7
+    node = new GraphNode(7,8);
+    graph.add(2,node);
+    
+    
+    Prim prim;
+    //graph.print();
+    std::cout << std::endl;
+    Dijkstra dijkstra;
+    
+    //AdjList* graph2 = prim.getMST(&graph);
+    //AdjList* graph2 = dijkstra.getMinDist(1,&graph);
+    SteinerApproximation steiner;
+    std::vector<int> terminals;
+    
+    terminals.push_back(1);
+    terminals.push_back(4);
+    terminals.push_back(6);
+    */
+    
+    //AdjList* graph2  = steiner.calculateSteinerTree(&graph,&terminals,3);
+    //graph2->print();
+    
+    return 0;
+}
+

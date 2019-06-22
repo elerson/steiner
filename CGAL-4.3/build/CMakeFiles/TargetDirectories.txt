@@ -1,0 +1,7 @@
+/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/build/src/CGAL/CMakeFiles/CGAL.dir
+/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/build/src/CGAL_Core/CMakeFiles/CGAL_Core.dir
+/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/build/src/CGAL_ImageIO/CMakeFiles/CGAL_ImageIO.dir
+/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/build/src/CGAL_Qt4/CMakeFiles/CGAL_Qt4.dir
+/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/build/CMakeFiles/demos.dir
+/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/build/CMakeFiles/examples.dir
+/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/build/CMakeFiles/install_FindCGAL.dir

@@ -1,0 +1,6 @@
+#include "/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/src/CGAL_Qt4/utility.cpp"
+#include "/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/src/CGAL_Qt4/DemosMainWindow.cpp"
+#include "/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/src/CGAL_Qt4/GraphicsViewNavigation.cpp"
+#include "/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/src/CGAL_Qt4/resources.cpp"
+#include "/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/src/CGAL_Qt4/GraphicsViewPolylineInput.cpp"
+#include "/home/elerson/mestrado/elerson/mestradosoftware/TreeGeneration/CGAL-4.3/src/CGAL_Qt4/debug.cpp"
