@@ -31,17 +31,29 @@ The steinerData3.dat contains some information about the tree such as its size
 The steinerData1.dat contains an graph represented in a adjacency list
 
 ex:
+
 0
+
 1 4 -1
+
 1
+
 0 2 3 -1
+
 2
+
 1 -1
+
 3
+
 1 -1
+
 4
+
 0 -1
+
 -2
+
 0 423 138 1 460 163 2 448 350 3 659 67 4 325 83 -2
 
 
