@@ -1,27 +1,33 @@
-How to compile:
+# How to compile:
 
 Obs. opencv4 and qt4 required to compile the code
 
 
 cd Visualizer/Visualizer
+
 qmake Visualizer.pro
+
 make
 
 
-How to use:
+# How to use:
 
 given an image with the obstacles: enviroment.png
 
 cd Visualizer/Visualizer
+
 ./Visualizer enviroment.png
 
 In the interface, select the desired terminal points with the right button of the mouse.
+
 The tree is generated after clicking in generate tree.
+
 The experiment is saved in experiments after clicking to save:
 
 The output files: steinerData1.dat, steinerData3.dat
 
 The steinerData3.dat contains some information about the tree such as its size
+
 The steinerData1.dat contains an graph represented in a adjacency list
 
 ex:
