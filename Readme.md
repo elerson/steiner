@@ -22,7 +22,7 @@ In the interface, select the desired terminal points with the right button of th
 
 The tree is generated after clicking in generate tree.
 
-The experiment is saved in experiments after clicking to save:
+The experiment is saved in experiments folder after clicking to save it:
 
 The output files: steinerData1.dat, steinerData3.dat
 
