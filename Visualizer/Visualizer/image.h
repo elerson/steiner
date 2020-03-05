@@ -39,7 +39,7 @@ public:
     enum Selection { CREATECLIENT, DELETCLIENT,CREATEPOLYGON,DELETEPOLYGON,CREATEEVN,DELETEENV};
     enum TREE { EUCLIDEANSTEINER, GRAPHSTEINER};
     explicit Image(QWidget *parent = 0);
-    void initialize(std::string image_file);
+    void initialize(std::string image_file, std::string clients);
     
 signals:
 
@@ -75,6 +75,8 @@ protected:
     void createObstacles();
 
 public:
+    void saveClients();
+    void openClients();
     void saveImage();
     void createExperiment();
     void setSelection(Selection selection);
@@ -84,6 +86,7 @@ public:
 private:
     typedef void (Image::*Functionpointer)( void *) ;
 
+    std::string client_file;
     std::string image_file;
     QImage m_image;
     QPoint m_ddpoint; //drag and drop point

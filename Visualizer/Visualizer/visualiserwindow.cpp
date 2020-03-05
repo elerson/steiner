@@ -3,12 +3,12 @@
 #include <image.h>
 #include <string>
 
-VisualiserWindow::VisualiserWindow(std::string file, QWidget *parent) :
+VisualiserWindow::VisualiserWindow(std::string file, std::string file2, QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::VisualiserWindow)
 {
     ui->setupUi(this);
-    ui->Imagewidget->initialize(file);
+    ui->Imagewidget->initialize(file, file2);
     QObject::connect(ui->radiobtcreateclient,SIGNAL(clicked()),this,SLOT(changeAction()));
     //QObject::connect(ui->radiobtcreatepolygon,SIGNAL(clicked()),this,SLOT(changeAction()));
     QObject::connect(ui->radiobtdestroyclient,SIGNAL(clicked()),this,SLOT(changeAction()));

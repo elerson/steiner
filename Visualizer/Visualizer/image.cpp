@@ -13,9 +13,12 @@ Image::Image(QWidget *parent) :
     QWidget(parent)
 {}
 
-void Image::initialize(std::string image_file){
+void Image::initialize(std::string image_file, std::string clients){
     m_image.load(image_file.c_str());
     cv_img = cv::imread(image_file, 0);
+
+    client_file = clients;
+    openClients();
 
     this->createObstacles();
     this->createEnvironment();
@@ -460,6 +463,8 @@ void Image::createExperiment()
     dir.setFilter(QDir::Dirs);
     int n = dir.entryList().size()/2;
 
+    saveClients();
+
     QString euclideanexperiment;
     euclideanexperiment.append(QString::number(n)+QString("euclideanexperiment"));
     dir.mkdir(euclideanexperiment);
@@ -508,4 +513,37 @@ void Image::deletePolygon(void *vevent)
     }
 }
 
+
+void Image::saveClients()
+{
+    QString filename="Clients.txt";
+    QFile file( filename );
+    if ( file.open(QIODevice::ReadWrite) )
+    {
+        QTextStream stream( &file );
+        for(int i = 0; i < m_clientset.size(); i++)
+        {
+          QPoint drawposition = m_clientset.at(i);
+          stream << drawposition.x() << "," << drawposition.y() << endl;
+        }
+    }
+}
+
+void Image::openClients()
+{
+    QString filename = QString::fromStdString(client_file);
+    QFile inputFile(filename);
+    if (inputFile.open(QIODevice::ReadOnly))
+    {
+       QTextStream in(&inputFile);
+       while (!in.atEnd())
+       {
+          QString line = in.readLine();
+          //std::cout << line.split(",")[0].toStdString() << std::endl;
+          QPoint c_position(line.split(",")[0].toInt(),line.split(",")[1].toInt());
+          m_clientset.push_back(c_position);
+       }
+       inputFile.close();
+    }
+}
 

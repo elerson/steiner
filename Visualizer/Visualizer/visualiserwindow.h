@@ -12,7 +12,7 @@ class VisualiserWindow : public QMainWindow
     Q_OBJECT
     
 public:
-    explicit VisualiserWindow(std::string file, QWidget *parent = 0);
+    explicit VisualiserWindow(std::string file, std::string file2, QWidget *parent = 0);
     ~VisualiserWindow();
     void setImage(char*);
 private slots:

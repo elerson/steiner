@@ -42,12 +42,13 @@ INCLUDEPATH += $(shell pkg-config opencv4 --cflags )
 FORMS    += visualiserwindow.ui
 LIBS += -lCGAL -lgmp -frounding-math ../../EuclideanSteinerTree/libefst.a
 CONFIG += link_pkgconfig
-PKGCONFIG += opencv4
 CONFIG += c++11
 QMAKE_CXXFLAGS += -std=c++11
 
 OTHER_FILES += \
     ../../GraphSteinerTree/Makefile
+
+PKGCONFIG += opencv4
 
 
 
